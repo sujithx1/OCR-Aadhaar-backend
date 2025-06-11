@@ -4,18 +4,10 @@ import morgan from "morgan"
 import cookieParser from "cookie-parser";
 import { ocrroute } from "./interfaces/routes/ocrRoutes";
 import { errorHandler } from "./config/errorhandlers";
+import { corsOptions } from "./config/cors";
 
 const app=express()
  
-
-  
-const corsOptions={
-    origin: process.env.CLIENT_URL, 
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-}
-
 app.use(cors(corsOptions))
 app.use('/uploads', express.static('uploads'));
 app.use('/api', ocrroute);

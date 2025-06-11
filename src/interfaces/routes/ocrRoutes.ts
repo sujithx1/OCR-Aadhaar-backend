@@ -1,9 +1,8 @@
 import express from "express";
 import multer from "multer";
-import { OCRcontroller } from "../controllers/ocrcontroller";
+import { orcController } from "../DI/ocr.di";
 const ocrroute = express.Router();
 
-const orcController = new OCRcontroller();
 
 const upload = multer({ dest: "uploads/" });
 
