@@ -27,6 +27,7 @@ export class OCRcontroller {
         return res.status(400).send("Both images required");
 
       const data=await this.ocrPostuseCase.execute(frontFile,backFile)
+      
       res
         .status(StatusCode.OK)
         .json({ success: true, data, message:StatusMessage.parsing_ok});

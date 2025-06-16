@@ -1,5 +1,6 @@
 import { AppError } from "../config/apperror";
 import { client } from "../config/credential";
+import { ErrorCodes } from "../config/errorcodes";
 import { AadhaarData } from "../types/types";
 
 export class OCRUseCase {
@@ -8,6 +9,7 @@ export class OCRUseCase {
   async execute(frontFile: Express.Multer.File, backFile: Express.Multer.File) {
     const [frontResult] = await client.textDetection(frontFile.path);
     const [backResult] = await client.textDetection(backFile.path);
+      // if(!frontFile||!backResult)throw new AppError("InValid images",400)
 
     const frontText = frontResult.textAnnotations?.[0]?.description || "";
     const backText = backResult.textAnnotations?.[0]?.description || "";
@@ -67,6 +69,8 @@ export class OCRUseCase {
       /Issue\s*Date[:\s]*(\d{2}[\/\-]\d{2}[\/\-]\d{4})/i
     );
     const issuedDate = issuedDateMatch?.[1] || "";
+    if(name.length===0)throw new AppError("Invalid images",400)
+
 
     const data: AadhaarData = {
       name,
