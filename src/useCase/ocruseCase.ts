@@ -13,12 +13,17 @@ export class OCRUseCase {
 
     const frontText = frontResult.textAnnotations?.[0]?.description || "";
     const backText = backResult.textAnnotations?.[0]?.description || "";
+    if (frontText.length==0||backText.length==0) {
+      throw new AppError("Valid Image Needed");
+      
+      
+    }
 
     if (frontText == backText) {
       throw new AppError("upload both front and back of aadhaar", 401);
     }
 
-    console.log("full text    ", frontText, backText);
+    console.log("full text  ", frontText, backText);
     const combinedText = `${frontText}\n${backText}`;
 
     const nameMatch = combinedText.match(
@@ -29,7 +34,7 @@ export class OCRUseCase {
     const dobMatch = combinedText.match(
       /(?:DOB|DON)[\s|:]*([0-9]{2}[\/\-][0-9]{2}[\/\-][0-9]{4})/
     );
-    const dob = dobMatch?.[1] || "";
+    const dob= dobMatch?.[1] || "";
 
     const aadhaarMatch = combinedText.match(/\b\d{4}\s\d{4}\s\d{4}\b/);
     const aadhaarNumber = aadhaarMatch?.[0] || "";
@@ -69,7 +74,7 @@ export class OCRUseCase {
       /Issue\s*Date[:\s]*(\d{2}[\/\-]\d{2}[\/\-]\d{4})/i
     );
     const issuedDate = issuedDateMatch?.[1] || "";
-    if(name.length===0)throw new AppError("Invalid images",400)
+    if(name.length===0||dob.length==0||!gender||aadhaarNumber.length==0||address.length==0||pincode.length==0||phoneNumber.length==0||fatherName.length==0)throw new AppError("Invalid images",400)
 
 
     const data: AadhaarData = {
